@@ -1,7 +1,7 @@
-﻿/*
-regingdb is .NET console program for one task:
-do the same things as ESRI ArcCatalog do by context menu command
-"Register with Geodatabase", I meant SDE GDB.
+/*
+regingdb is a .NET C# console program for one task:
+perform the same things as ESRI ArcCatalog do by context menu command
+"Register with Geodatabase" for tables in SDE GDB.
 
 Copyright (C) 1996-2010, ALGIS LLC
 Originally by Valik <vasnake@gmail.com>, 2010.
@@ -24,14 +24,9 @@ Originally by Valik <vasnake@gmail.com>, 2010.
 
 using System;
 using System.Runtime.InteropServices;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
 using ESRI.ArcGIS.esriSystem;
 using ESRI.ArcGIS.Geodatabase;
 using ESRI.ArcGIS.DataSourcesGDB;
-//using ESRI.ArcGIS.Framework;
-//using ESRI.ArcGIS.ADF;
 
 namespace regingdb {
     public enum progResultCode : int {
@@ -76,29 +71,32 @@ namespace regingdb {
     /// <summary>
     /// Task processor for "Register in Geodatabase"
     /// usage:
-    ///     // RegInEsriGDB mTask = new RegInEsriGDB(sde, tab, fld);
+    ///        RegInEsriGDB mTask = new RegInEsriGDB(sde, tab, fld);
     ///        mTask.initLic();
     ///        mTask.doWork();
-    ///     // finally: mTask.shutdown();
+    ///        finally: mTask.shutdown();
     /// </summary>
     class RegInEsriGDB {
+
         public IAoInitialize
             mLicInit = null;
+
         public String
             mSdeConnFileName = "", mTabName = "", mOidFldName = "";
 
-        public
-            RegInEsriGDB(String sdeConnFileName, String tabName, String oidFieldName) {
+        public RegInEsriGDB(
+            String sdeConnFileName,
+            String tabName,
+            String oidFieldName)
+        {
             //Log.p("RegInEsriGDB constructor");
             mSdeConnFileName = sdeConnFileName;
             mTabName = tabName;
             mOidFldName = oidFieldName;
-            //throw (new Exception("oops, get TODO?"));
         } // constructor
 
 
-        public void
-            initLic() {
+        public void initLic() {
             try {
                 IAoInitialize ini = new AoInitializeClass();
                 mLicInit = ini;
@@ -133,7 +131,7 @@ namespace regingdb {
                 Log.p("ERR, initLic exception: " + e.Message);
                 throw e;
             }
-        } // method initLic
+        } // initLic method
 
 
         public void shutdown() {
@@ -141,8 +139,7 @@ namespace regingdb {
         }
 
 
-        public void
-            doWork() {
+        public void doWork() {
             String sdeconnfname = mSdeConnFileName; // "c:\\t\\test.sde";
             String tabname = mTabName; // "TEST.TABLE1";
 
@@ -155,7 +152,7 @@ namespace regingdb {
             Boolean isreg = fwspm.IsRegisteredAsObjectClass(tabname);
             if (isreg != false) {
                 Log.p("registered already, tab.name [" + tabname + "]", "both");
-//                throw (new Exception("registered already, tab.name [" + tabname + "]"));
+                // throw (new Exception("registered already, tab.name [" + tabname + "]"));
                 return;
             }
 
@@ -173,11 +170,13 @@ namespace regingdb {
             RegisterWithGeodatabase(oc, mOidFldName);
 
             Log.p("OK, registered.", "both");
-        } // method doWork
+        } // doWork method
 
 
-        protected void
-            RegisterWithGeodatabase(IObjectClass objectClass, String oidFieldName) {
+        protected void RegisterWithGeodatabase(
+            IObjectClass objectClass,
+            String oidFieldName)
+        {
             if (oidFieldName == "") {
                 oidFieldName = "OBJECTID";
             }
@@ -198,7 +197,7 @@ namespace regingdb {
                 // Reset the lock on the object class to a shared lock.
                 schemaLock.ChangeSchemaLock(esriSchemaLock.esriSharedSchemaLock);
             }
-        } // method RegisterWithGeodatabase
+        } // RegisterWithGeodatabase method
 
     } // class RegInEsriGDB
 
@@ -207,6 +206,7 @@ namespace regingdb {
     /// Main program, do "Register in Geodatabase" for SDE table
     /// </summary>
     class Program {
+
         public static RegInEsriGDB mTask = null;
 
         /// <summary>
@@ -228,7 +228,7 @@ namespace regingdb {
                 + "], oidFldName [" + fld + "]");
             RegInEsriGDB p = new RegInEsriGDB(sde, tab, fld);
             mTask = p;
-        } // method parseArgs
+        } // parseArgs method
 
 
         static void Main(string[] args) {
@@ -237,10 +237,8 @@ namespace regingdb {
             Environment.ExitCode = (int)progResultCode.good;
             try {
                 parseArgs(args);
-                //RegInEsriGDB mTask = new RegInEsriGDB(sde, tab, fld);
                 mTask.initLic();
                 mTask.doWork();
-                //finally: mTask.shutdown();
             }
             catch (COMException e) {
                 Log.p("COM Error", "both"); Log.p(e.Message);
@@ -254,7 +252,8 @@ namespace regingdb {
                 Log.p("Program done.");
                 if (mTask != null) mTask.shutdown();
             }
-        } // method Main
+        } // Main method
 
     } // class Program
+
 } // namespace regingdb
