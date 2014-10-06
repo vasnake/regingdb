@@ -1,0 +1,16 @@
+C:\d\code\VisualStudio2008\Projects\regingdb.sol\regingdb\bin\Release\regingdb.exe
+C:\d\code\VisualStudio2008\Projects\regingdb.sol\regingdb\bin\Release\regingdb.pdb
+C:\d\code\VisualStudio2008\Projects\regingdb.sol\regingdb\obj\Release\ResolveAssemblyReference.cache
+C:\d\code\VisualStudio2008\Projects\regingdb.sol\regingdb\obj\Release\regingdb.exe
+C:\d\code\VisualStudio2008\Projects\regingdb.sol\regingdb\obj\Release\regingdb.pdb
+C:\d\code\rngis.db.updater\src\regingdb.sol\regingdb\bin\Release\regingdb.exe
+C:\d\code\rngis.db.updater\src\regingdb.sol\regingdb\bin\Release\regingdb.pdb
+C:\d\code\rngis.db.updater\src\regingdb.sol\regingdb\obj\Release\ResolveAssemblyReference.cache
+C:\d\code\rngis.db.updater\src\regingdb.sol\regingdb\obj\Release\regingdb.exe
+C:\d\code\rngis.db.updater\src\regingdb.sol\regingdb\obj\Release\regingdb.pdb
+C:\d\code\rngis.db.updater\src\regingdb.sol\regingdb\bin\Release\regingdb.exe.config
+C:\d\code\rngis.db.updater\src\regingdb.sol\regingdb\bin\Release\regingdb.exe.manifest
+C:\d\code\rngis.db.updater\src\regingdb.sol\regingdb\bin\Release\regingdb.application
+C:\d\code\rngis.db.updater\src\regingdb.sol\regingdb\obj\Release\regingdb.TrustInfo.xml
+C:\d\code\rngis.db.updater\src\regingdb.sol\regingdb\obj\Release\regingdb.exe.manifest
+C:\d\code\rngis.db.updater\src\regingdb.sol\regingdb\obj\Release\regingdb.application
