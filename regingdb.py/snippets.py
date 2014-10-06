@@ -1,4 +1,5 @@
-# Snippets.py
+# -*- mode: python; coding: utf-8 -*-
+# Snippets.py from http://www.pierssen.com/arcgis/misc.htm
 
 #**** Initialization ****
 
@@ -6,7 +7,7 @@ def GetLibPath():
     """Return location of ArcGIS type libraries as string"""
     # return "C:/Program Files/ArcGIS/com/"
     import _winreg
-    keyESRI = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE, \
+    keyESRI = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,
                               "SOFTWARE\\ESRI\\ArcGIS")
     return _winreg.QueryValueEx(keyESRI, "InstallDir")[0] + "com\\"
 
@@ -35,9 +36,10 @@ def GetStandaloneModules():
 #**** Helper Functions ****
 
 def NewObj(MyClass, MyInterface):
-    """Creates a new comtypes POINTER object where\n\
-    MyClass is the class to be instantiated,\n\
-    MyInterface is the interface to be assigned"""
+    """Creates a new comtypes POINTER object where
+    MyClass is the class to be instantiated,
+    MyInterface is the interface to be assigned
+    """
     from comtypes.client import CreateObject
     try:
         ptr = CreateObject(MyClass, interface=MyInterface)
@@ -60,9 +62,9 @@ def CLSID(MyClass):
 def InitStandalone():
     """Init standalone ArcGIS license"""
     import comtypes.gen.esriSystem as esriSystem
-    pInit = NewObj(esriSystem.AoInitialize, \
+    pInit = NewObj(esriSystem.AoInitialize,
                    esriSystem.IAoInitialize)
-    ProductList = [esriSystem.esriLicenseProductCodeArcEditor, \
+    ProductList = [esriSystem.esriLicenseProductCodeArcEditor,
                    esriSystem.esriLicenseProductCodeArcView]
     for eProduct in ProductList:
         licenseStatus = pInit.IsProductCodeAvailable(eProduct)
@@ -73,8 +75,9 @@ def InitStandalone():
     return False
 
 def GetApp(app="ArcMap"):
-    """app must be 'ArcMap' (default) or 'ArcCatalog'\n\
-    Execute GetDesktopModules() first"""
+    """app must be 'ArcMap' (default) or 'ArcCatalog'
+    Execute GetDesktopModules() first
+    """
     if not (app == "ArcMap" or app == "ArcCatalog"):
         print "app must be 'ArcMap' or 'ArcCatalog'"
         return None
@@ -105,7 +108,6 @@ def Msg(message="Hello world", title="ARDemo"):
 #**** Standalone ****
 
 def Standalone_OpenFileGDB():
-
     GetStandaloneModules()
     if not InitStandalone():
         print "We've got lumps of it 'round the back..."
@@ -121,8 +123,7 @@ def Standalone_OpenFileGDB():
     print "Workspace name: " + pDS.BrowseName
     print "Workspace category: " + pDS.Category
 
-def Standalone_OpenSDE():    
-    
+def Standalone_OpenSDE():
     GetStandaloneModules()
     InitStandalone()
     import comtypes.gen.esriSystem as esriSystem
@@ -137,14 +138,13 @@ def Standalone_OpenSDE():
     pPropSet.SetProperty("VERSION", "SDE.DEFAULT")
     pWSF = NewObj(esriDataSourcesGDB.SdeWorkspaceFactory, \
                   esriGeoDatabase.IWorkspaceFactory)
-    pWS = pWSF.Open(pPropSet, 0)    
+    pWS = pWSF.Open(pPropSet, 0)
     pDS = CType(pWS, esriGeoDatabase.IDataset)
     print "Workspace name: " + pDS.BrowseName
     print "Workspace category: " + pDS.Category
     return pWS
 
 def Standalone_OpenGISServer():
-
     GetModule("esriServer.olb")
     GetModule("esriGeometry.olb")
     import comtypes.gen.esriServer as esriServer
@@ -174,7 +174,6 @@ def Standalone_OpenGISServer():
     pServerContext.ReleaseContext()
 
 def Standalone_QueryDBValues():
-
     GetStandaloneModules()
     InitStandalone()
     import comtypes.gen.esriServer as esriSystem
@@ -185,7 +184,7 @@ def Standalone_QueryDBValues():
     sTabName = "Parcels"
     sWhereClause = "parcel_id = 6358"
     sFieldName = "zoning_s"
-    
+
     pWSF = NewObj(esriDataSourcesGDB.FileGDBWorkspaceFactory, esriGeoDatabase.IWorkspaceFactory)
     pWS = pWSF.OpenFromFile(sPath, 0)
     pFWS = CType(pWS, esriGeoDatabase.IFeatureWorkspace)
@@ -200,9 +199,8 @@ def Standalone_QueryDBValues():
     Val = pRow.Value(pTab.FindField(sFieldName))
     if Val is None:
         print "Null value"
-    
-def Standalone_CreateTable():
 
+def Standalone_CreateTable():
     GetStandaloneModules()
     InitStandalone()
     import comtypes.gen.esriServer as esriSystem
@@ -215,7 +213,7 @@ def Standalone_CreateTable():
                   esriGeoDatabase.IWorkspaceFactory)
     pWS = pWSF.OpenFromFile(sWSPath, 0)
     pFWS = CType(pWS, esriGeoDatabase.IFeatureWorkspace)
-    
+
     pOutFields = NewObj(esriGeoDatabase.Fields, esriGeoDatabase.IFields)
     pFieldsEdit = CType(pOutFields, esriGeoDatabase.IFieldsEdit)
     pFieldsEdit._FieldCount = 2
@@ -232,17 +230,16 @@ def Standalone_CreateTable():
     pFieldsEdit._Field[1] = pNewField
     pOutTable = pFWS.CreateTable(sTableName, pOutFields, \
                                  None, None, "")
-    
+
     iField = pOutTable.FindField("LUMBERJACK")
     print "'LUMBERJACK' field index = ", iField
     pRow = pOutTable.CreateRow()
     pRow.Value[iField] = "I sleep all night and I work all day"
     pRow.Store()
-    
+
 #**** ArcMap ****
 
 def ArcMap_GetSelectedGeometry():
-
     GetDesktopModules()
     import comtypes.gen.esriFramework as esriFramework
     import comtypes.gen.esriArcMapUI as esriArcMapUI
@@ -280,7 +277,6 @@ def ArcMap_GetSelectedGeometry():
     return pShape
 
 def ArcMap_AddTextElement():
-
     GetDesktopModules()
     import comtypes.gen.esriFramework as esriFramework
     import comtypes.gen.esriArcMapUI as esriArcMapUI
@@ -333,7 +329,7 @@ def ArcMap_AddTextElement():
     pTextElement.Text = "Wink, wink, nudge, nudge,\nSay no more!"
     pElement = CType(pTextElement, esriCarto.IElement)
     pElement.Geometry = pPt
-    
+
     pGC = CType(pMap, esriCarto.IGraphicsContainer)
     pGC.AddElement(pElement, 0)
     pGCSel = CType(pMap, esriCarto.IGraphicsContainerSelect)
@@ -352,7 +348,6 @@ def ArcMap_AddTextElement():
     return
 
 def ArcMap_GetEditWorkspace():
-
     GetDesktopModules()
     GetModule("esriEditor.olb")
     import comtypes.gen.esriSystem as esriSystem
@@ -370,7 +365,6 @@ def ArcMap_GetEditWorkspace():
         print "Workspace category: " + pDS.Category
 
 def ArcMap_GetSelectedTable():
-
     GetDesktopModules()
     import comtypes.gen.esriFramework as esriFramework
     import comtypes.gen.esriArcMapUI as esriArcMapUI
@@ -392,7 +386,6 @@ def ArcMap_GetSelectedTable():
 #**** ArcCatalog ****
 
 def ArcCatalog_GetSelectedTable():
-
     GetDesktopModules()
     import comtypes.gen.esriFramework as esriFramework
     import comtypes.gen.esriCatalogUI as esriCatalogUI
@@ -415,4 +408,3 @@ def ArcCatalog_GetSelectedTable():
     pDS = pGxDS.Dataset
     pTable = CType(pDS, esriGeoDatabase.ITable)
     print "Selected table: " + pDS.Name
-
